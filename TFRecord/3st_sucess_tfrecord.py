@@ -54,16 +54,18 @@ def convert_to_tfrecord(images,labels,tfrecord_file):
     #     raise ValueError('Images size %d does not match label size %d.' % (len(image_list), n_samples))
 
 # wait some time here, transforming need some time based on the size of your data.
-    writer = tf.python_io.TFRecordWriter(tfrecord_file)
+    writer = tf.python_io.TFRecordWriter(tfrecord_file)#创建一个writer来写TFRecord文件
     print('\nTransform start......')
     for i in np.arange(0, n_samples):
         try:
             image = io.imread(images[i]) #type(image) must be array!
-            image_raw = image.tostring()
+            image_raw = image.tostring()#将图像矩阵转化为一个字符串
             label = int(labels[i])
+            #将一个样例转化成Example Protocol Buffer，并将所有的信息写入这个数据结构
             example = tf.train.Example(features=tf.train.Features(feature={
                 'label': int64_feature(label),
                 'image_raw': bytes_feature(image_raw)}))
+            #将一个Example写入TFRecord文件
             writer.write(example.SerializeToString())
         except IOError as e:
             print('Could not read:', images[i])

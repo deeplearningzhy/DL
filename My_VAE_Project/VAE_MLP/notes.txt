@@ -1,0 +1,2 @@
+reconstruction loss 用的sigmoid交叉熵
+kl_loss也不大一样
